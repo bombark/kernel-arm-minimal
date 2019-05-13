@@ -14,9 +14,16 @@ set(CMAKE_LINKER       "arm-none-eabi-ld")
 set(LINKER_FILE        "${CMAKE_SOURCE_DIR}/etc/main.ld")
 
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mcpu=arm926ej-s")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}  -mcpu=arm926ej-s")
+set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -nostartfiles" )
+set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mfloat-abi=hard" )
+
+
 set(CMAKE_EXE_LINKER_FLAGS "-T ${LINKER_FILE}" )
 set(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS)
+
+
+
 
 
 
@@ -26,7 +33,7 @@ add_executable(kernel.elf src/startup.s src/main.c)
 
 add_custom_command(
 	TARGET  kernel.elf POST_BUILD
-	COMMAND arm-none-eabi-objcopy ./kernel.elf -O binary ./kernel.img
+	COMMAND arm-none-eabi-objcopy ./kernel.elf -O binary ./kernel.bin
 	WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 	COMMENT "Convert the ELF output file to a binary image"
 )

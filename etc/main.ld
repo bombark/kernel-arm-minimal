@@ -9,7 +9,7 @@ UND_STACK_SIZE = 0x200;
 
 SECTIONS {
 	. = 0x10000;
-	.startup . : { startup.o(.text) }
+	.startup . : { *(.text.startup) }
 	.text : { *(.text) }
 	.data : { *(.data) }
 	.bss : { *(.bss COMMON) }

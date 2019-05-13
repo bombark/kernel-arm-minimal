@@ -1,3 +1,4 @@
+.section ".text.startup"
 .global _Reset
 
 
