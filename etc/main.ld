@@ -15,9 +15,6 @@ SECTIONS {
 	.bss : { *(.bss COMMON) }
 	. = ALIGN(8);
 
-
-
-
 	.stack : {
 		__stack_start__ = . ;
 
