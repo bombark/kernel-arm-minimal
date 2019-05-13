@@ -3,7 +3,7 @@
 
 #include <string.h>
 #include <stdarg.h>
-#include <stdlib.h>
+
 
 #define false 0
 #define true  1
@@ -132,11 +132,11 @@ void InterruptSys_addCallback(InterruptSys* self, int id, void(*_cb)(void)){
 
 void InterruptSys_updateMode(InterruptSys* self){
 	int mode = 0;
-	asm("STMDB SP!,  {R1}");         /* save work register */
-	asm("MRS   R1,   CPSR");         /* get current program status */
+	asm("STMDB SP!,  {R1}");
+	asm("MRS   R1,   CPSR");
 	asm("STR   R1, [fp, #-8]");
 	//asm("STR   R1, [%0]" : "=r"(mode));
-	asm("LDMIA SP!,  {R1}");         /* restore work register */
+	asm("LDMIA SP!,  {R1}");
 	sys_printf("mode %d\n",mode);
 	self->mode = mode;
 }
@@ -151,11 +151,11 @@ void InterruptSys_enable(InterruptSys* self){
 }
 
 void InterruptSys_disable(InterruptSys* self){
-	asm("STMDB SP!,  {R1}");         /* save work register */
-	asm("MRS   R1,   CPSR");         /* get current program status */
-	asm("ORR   R1,   R1, #0x80");    /* OR with new value (variable NewState is in R0) */
-	asm("MSR   CPSR, R1");           /* store updated program status */
-	asm("LDMIA SP!,  {R1}");         /* restore work register */
+	asm("STMDB SP!,  {R1}");
+	asm("MRS   R1,   CPSR");
+	asm("ORR   R1,   R1, #0x80");
+	asm("MSR   CPSR, R1");
+	asm("LDMIA SP!,  {R1}"); 
 	InterruptSys_updateMode(self);
 }
 
