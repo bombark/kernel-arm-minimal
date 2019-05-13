@@ -109,6 +109,7 @@ void sys_printf(const char* format, ...) {
 /*==  INTERRUPTIONS  =========================================================*/
 /*
 based:
+https://balau82.wordpress.com/2010/02/28/hello-world-for-bare-metal-arm-using-qemu/
 http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.faqs/ka3540.html
 http://www.state-machine.com/doc/Building_bare-metal_ARM_with_GNU.pdf
 https://static.docs.arm.com/ddi0198/e/DDI0198E_arm926ejs_r0p5_trm.pdf
@@ -126,10 +127,7 @@ void InterruptSys_boot(InterruptSys* self){
 }
 
 void InterruptSys_addCallback(InterruptSys* self, int id, void(*_cb)(void)){
-	void* cb = (void*) _cb;
-	for (int i=1; i<256; i++){
-		self->cpu_table[i] = cb;
-	}
+	self->cpu_table[id] = (void*) _cb;
 }
 
 void InterruptSys_updateMode(InterruptSys* self){
@@ -174,7 +172,6 @@ void callback_irq0(void) {
 void boot(){
 	static InterruptSys interrupt_sys;
 	InterruptSys_boot(&interrupt_sys);
-	InterruptSys_disable(&interrupt_sys);
 	InterruptSys_addCallback(&interrupt_sys, 0, callback_irq0);
 	InterruptSys_enable(&interrupt_sys);
 }
@@ -188,7 +185,7 @@ void main() {
 	for (int i=0; i<100; i++){
 		sys_printf("Hello world %d\n", GLOBAL);
 	}
-	sys_puts("FIMMMM!!!!\n");
+	sys_puts("END!!!!\n");
 	shutdown();
 }
 
